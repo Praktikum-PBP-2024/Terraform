@@ -153,7 +153,7 @@ provider "proxmox" {
 resource "proxmox_vm_qemu" "generate-automated-vm" {
   for_each    = { for idx, vm in var.vm_data : idx => vm }
 
-  vmid        = 13000 + each.key
+  vmid        = 12900 + each.key
   name        = each.value.name
   tags        = "generated_pbp_d2"
   target_node = "pve"
@@ -166,7 +166,7 @@ resource "proxmox_vm_qemu" "generate-automated-vm" {
 
   sockets     = 1
   cores       = 4
-  memory      = 1024
+  memory      = 2048
 
   ciuser      = each.value.id
   cipassword  = each.value.id
@@ -178,7 +178,7 @@ resource "proxmox_vm_qemu" "generate-automated-vm" {
     ide {
       ide2 {
         cloudinit {
-          storage = "lvm-thinpool-sata-ssd-0"
+          storage = "lvm-thinpool-nvme-ssd-0"
         }
       }
     }
@@ -186,10 +186,10 @@ resource "proxmox_vm_qemu" "generate-automated-vm" {
     scsi {
       scsi0 {
         disk {
-          size = "8G"
+          size = "10G"
           discard            = true
           emulatessd         = true
-          storage = "lvm-thinpool-sata-ssd-0"
+          storage = "lvm-thinpool-nvme-ssd-0"
         }
       }
     }
